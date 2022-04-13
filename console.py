@@ -115,16 +115,47 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        args = args.split()
+        # verifica el nombre de la clase en la lista de clases disponibles
+        if args == []:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        else:
+            cl_name = args[0]
+        # crea nueva instancia
+        new_instance = HBNBCommand.classes[cl_name]()
+        # si hay más argumentos, restablece argumentos sin nombre de clase
+        if args[1]:
+            args = args[1:]
+        else:
+            new_instance.save()
+            print(new_instance.id)
+            return
+        # recorre cada argumento, dividiéndolo en pares clave/valor
+        for argument in args:
+            my_args = argument.split("=")
+            key = my_args[0]
+            value = my_args[1]
+            # si hay guiones bajos en valor, es reemplazado por espacios
+            for i in range(len(value)):
+                if value[i] == "_":
+                    value = value[:i] + " " + value[i+1:]
+            # si hay comillas alrededor de la clave o valor,
+            # recortar para eliminar
+            if (key[0] == "'" and key[-1] == "'") or (
+                    key[0] == "\"" and key[-1] == "\""):
+                key = key[1:-1]
+            if (value[0] == "'" and value[-1] == "'") or (
+                    value[0] == "\"" and value[-1] == "\""):
+                value = value[1:-1]
+            # el atributo se establece en esa clave en el diccionario de obj
+            setattr(new_instance, key, value)
+        # se guarda el nuevo objeto
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -319,6 +350,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
