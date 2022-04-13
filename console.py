@@ -126,36 +126,21 @@ class HBNBCommand(cmd.Cmd):
         else:
             cl_name = args[0]
         # crea nueva instancia
-        new_instance = HBNBCommand.classes[cl_name]()
+        new_obj = HBNBCommand.classes[cl_name]()
         # si hay más argumentos, restablece argumentos sin nombre de clase
         if args[1]:
-            args = args[1:]
-        else:
-            new_instance.save()
-            print(new_instance.id)
-            return
-        # recorre cada argumento, dividiéndolo en pares clave/valor
-        for argument in args:
-            my_args = argument.split("=")
-            key = my_args[0]
-            value = my_args[1]
-            # si hay guiones bajos en valor, es reemplazado por espacios
-            for i in range(len(value)):
-                if value[i] == "_":
-                    value = value[:i] + " " + value[i+1:]
-            # si hay comillas alrededor de la clave o valor,
-            # recortar para eliminar
-            if (key[0] == "'" and key[-1] == "'") or (
-                    key[0] == "\"" and key[-1] == "\""):
-                key = key[1:-1]
-            if (value[0] == "'" and value[-1] == "'") or (
-                    value[0] == "\"" and value[-1] == "\""):
-                value = value[1:-1]
-            # el atributo se establece en esa clave en el diccionario de obj
-            setattr(new_instance, key, value)
-        # se guarda el nuevo objeto
-        new_instance.save()
-        print(new_instance.id)
+            params = args[1:]
+
+        for param in params:
+            param = param.split("=")
+            key = param[0]
+            val = param[1]
+            val = val.replace('"', '')
+            val = val.replace('_', ' ')
+            setattr(new_obj, key, val)
+        storage.new(new_obj)
+        storage.save()
+        print(new_obj.id)
 
     def help_create(self):
         """ Help information for the create method """
