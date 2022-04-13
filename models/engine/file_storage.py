@@ -70,13 +70,11 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """If obj is equal to None, the method should not do anything"""
+        """
+        Delete obj from __objects if it’s inside
+        If obj is equal to None, the method should not do anything
+        """
         if (obj):
             """Delete obj from __objects if it’s inside"""
-            """for x in self.__objects.items():
-                if (obj == x[1]):
-                    Saving key of the coincidence
-                    key = x[0]
-            self.__objects.pop(key)"""
             check = obj.to_dict()['__class__'] + '.' + obj.id
             FileStorage.__objects.pop(check)
