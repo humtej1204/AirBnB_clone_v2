@@ -28,7 +28,7 @@ class State(BaseModel, Base):
         my_list = []
         my_obj = []
         for key in var:
-            city = key.split('.', '')
+            city = key.replace('.', ' ')
             city = shlex.split(city)
             if (city[0] == 'City'):
                 my_list.append(var[key])
