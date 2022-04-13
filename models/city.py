@@ -8,7 +8,6 @@ from sqlalchemy import ForeignKey
 from models.place import place
 
 
-
 class City(BaseModel, Base):
     """This is the class for City
     Attributes:
