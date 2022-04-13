@@ -1,0 +1,124 @@
+#!/usr/bin/python3
+
+from models.base_model import BaseModel
+
+bm = BaseModel()
+
+from models.base_model import BaseModel
+
+bm = BaseModel()
+print(type(bm.id))
+
+from models.base_model import BaseModel
+
+bm = BaseModel()
+print(type(bm.created_at))
+
+from models.base_model import BaseModel
+
+bm1 = BaseModel()
+bm2 = BaseModel()
+print(bm1.id != bm2.id)
+
+from models.base_model import BaseModel
+
+bm = BaseModel()
+s_bm = str(bm)
+print(s_bm.split(" ")[0])
+print(s_bm.split(" ")[1] == "({})".format(bm.id))
+
+from models.base_model import BaseModel
+from datetime import datetime
+
+bm = BaseModel()
+bm.updated_at = datetime.utcnow()
+d_json = bm.to_dict()
+print(type(d_json))
+print(type(d_json['id']))
+print(type(d_json['created_at']))
+print(type(d_json['__class__']))
+print(d_json['__class__'])
+
+from models.base_model import BaseModel
+
+bm = BaseModel()
+bm.save()
+print(type(bm.updated_at))
+d_json = bm.to_dict()
+print(type(d_json['updated_at']))
+
+#!/usr/bin/python3
+"""Doc
+"""
+from models.tmp_base_model import *
+from models.tmp_base_model import BaseModel
+
+
+class BaseModel(BaseModel):
+    """Doc
+    """
+
+    def save(self):
+        """Doc
+        """
+        pass
+
+"""Doc
+"""
+from models.tmp_base_model import *
+from models.tmp_base_model import BaseModel
+
+
+class BaseModel(BaseModel):
+    """Doc
+    """
+
+    def to_dict(self):
+        """Doc
+        """
+        return {}
+
+"""Doc
+"""
+from models.tmp_base_model import *
+from models.tmp_base_model import BaseModel
+
+
+class BaseModel(BaseModel):
+    """Doc
+    """
+
+    def __init__(self, *args, **kwargs):
+        """Doc
+        """
+        self.id = "Fake"
+
+"""Doc
+"""
+from models.tmp_base_model import *
+from models.tmp_base_model import BaseModel
+
+
+class BaseModel(BaseModel):
+    """Doc
+    """
+
+    def __init__(self, *args, **kwargs):
+        """Doc
+        """
+        self.created_at = "Fake"
+
+"""Doc
+"""
+from models.tmp_base_model import *
+from models.tmp_base_model import BaseModel
+
+
+class BaseModel(BaseModel):
+    """Doc
+    """
+
+    def __str__(self):
+        """Doc
+        """
+        return "Fake"
