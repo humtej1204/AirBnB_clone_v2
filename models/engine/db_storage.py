@@ -12,9 +12,6 @@ from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
 
-classes = {"Amenity": Amenity, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
-
 
 class DBStorage:
     __engine = None
@@ -40,14 +37,22 @@ class DBStorage:
         Return:
             returns a dictionary of __object
         """
-        all_dict = {}
-        for i in classes:
-            if cls is None or cls == i:
-                my_objs = self.__session.query(classes[i]).all()
-                for obj in my_objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
-                    all_dict[key] = obj
-        return (all_dict)
+        all_dic = {}
+        if cls:
+            if type(cls) is str:
+                cls = eval(cls)
+            query = self.__session.query(cls)
+            for elem in query:
+                key = "{}.{}".format(type(elem).__name__, elem.id)
+                all_dic[key] = elem
+        else:
+            cls_name = [State, City, User, Place, Review, Amenity]
+            for clase in cls_name:
+                query = self.__session.query(clase)
+                for elem in query:
+                    key = "{}.{}".format(type(elem).__name__, elem.id)
+                    all_dic[key] = elem
+        return (all_dic)
 
     def new(self, obj):
         """ añadir un nuevo elemento en la tabla
