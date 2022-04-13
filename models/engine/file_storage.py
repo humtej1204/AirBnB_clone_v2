@@ -79,4 +79,4 @@ class FileStorage:
                     key = x[0]
             self.__objects.pop(key)"""
             check = obj.to_dict()['__class__'] + '.' + obj.id
-            del FileStorage.__objects[check]
+            FileStorage.__objects.pop(check)
