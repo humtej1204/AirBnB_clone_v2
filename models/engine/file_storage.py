@@ -18,7 +18,7 @@ class FileStorage:
         from models.amenity import Amenity
         from models.review import Review
 
-        if cls == None:
+        if cls is None:
             """Returns a dictionary of models currently in storage"""
             return self.__objects
 
@@ -65,13 +65,13 @@ class FileStorage:
             with open(self.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
         """If obj is equal to None, the method should not do anything"""
-        if (obj == None):
+        if (obj is None):
             pass
         """Delete obj from __objects if it’s inside"""
         for x in self.__objects.items():
