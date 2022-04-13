@@ -117,19 +117,18 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         args = args.split()
         # verifica el nombre de la clase en la lista de clases disponibles
-        if args == []:
+        if not args[0]:
             print("** class name missing **")
             return
         if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        else:
-            cl_name = args[0]
+
+        cl_name = args[0]
         # crea nueva instancia
         new_obj = HBNBCommand.classes[cl_name]()
-        # si hay más argumentos, restablece argumentos sin nombre de clase
-        if args[1]:
-            params = args[1:]
+        # si hay más argumentos, restablece argumentos sin nombre de clas
+        params = args[1:]
 
         for param in params:
             param = param.split("=")
