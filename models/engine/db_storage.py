@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 import os
-"""SQLAlchemy Modules"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
-"""Modules of classes"""
 from models.base_model import Base
 from models.state import State
 from models.city import City
@@ -22,6 +20,7 @@ db = os.getenv("HBNB_MYSQL_DB")
 env = os.getenv("HBNB_ENV")
 engine_txt = 'mysql+mysqldb://' + user + ':' + pasw + '@' + host + '/' + db
 
+
 class DBStorage():
     """Constructor of the class DBStorage"""
     __engine = None
@@ -36,7 +35,7 @@ class DBStorage():
         """Returns the list of objects of one type of class or all"""
         objs = []
         dic = {}
-        if cls == None:
+        if cls is None:
             classes = [Base, State, City, Place, Review, User, Amenity]
             for cls in classes:
                 objs.extend(self.__session.query(cls).all())
