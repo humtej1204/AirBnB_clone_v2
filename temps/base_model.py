@@ -5,14 +5,16 @@ from datetime import datetime
 """SQLAlchemy Modules"""
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DateTime
+#from sqlalchemy import create_engine
+#from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
 class BaseModel():
     """ Class Atributes """
-    id = Column(String(60), primary_key=True, nullable=False, unique=True)
-    created_at = Column(DateTime(), nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime(), nullable=False, default=datetime.utcnow())
+    self.id = Column(String(60), primary_key=True, nullable=False, unique=True)
+    self.created_at = Column(DateTime(), nullable=False, default=datetime.utcnow())
+    self.updated_at = Column(DateTime(), nullable=False, default=datetime.utcnow())
 
     """A base class for all hbnb models"""
     def __init__(self, *args, **kwargs):

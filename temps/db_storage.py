@@ -4,15 +4,6 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
-"""Modules of classes"""
-from models.base_model import Base
-from models.state import State
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.user import User
-from models.amenity import Amenity
-
 
 """Environmental Variables"""
 user = os.getenv("HBNB_MYSQL_USER")
@@ -29,9 +20,19 @@ class DBStorage():
     def __init__(self):
         self.__engine = create_engine(engine_txt, pool_pre_ping=True)
         if env == 'test':
+            from models.base_model import Base
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
+        """Modules of classes"""
+        from models.base_model import Base
+        from models.state import State
+        from models.city import City
+        from models.place import Place
+        from models.review import Review
+        from models.user import User
+        from models.amenity import Amenity
+
         objs = []
         dic = {}
         if cls == None:
@@ -60,6 +61,7 @@ class DBStorage():
             self.__session.delete(obj)
 
     def reload(self):
+        from models.base_model import Base
         """Creating tables"""
         Base.metadata.create_all(self.__engine)
         """Creating a configurable Session factory"""
