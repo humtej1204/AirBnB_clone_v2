@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+from re import A
 import sys
-""" Import Classes """
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -11,8 +11,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
-from shlex import split
 
 
 class HBNBCommand(cmd.Cmd):
@@ -36,11 +34,10 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            print('(hbnb) ', end='')
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -149,7 +146,7 @@ class HBNBCommand(cmd.Cmd):
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <className> <param 1> <param 2> <param 3>...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -226,11 +223,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
