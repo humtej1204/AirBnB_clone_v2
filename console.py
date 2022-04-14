@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+""" Import Classes """
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -10,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
 from shlex import split
 
 
@@ -115,33 +117,34 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Creates a new instance of BaseModel, saves it
-        Exceptions:
-            SyntaxError: when there is no args given
-            NameError: when there is no object taht has the name
-        """
-        try:
-            if not line:
-                raise SyntaxError()
-            my_list = line.split(" ")
-            obj = eval("{}()".format(my_list[0]))
-            print("{}".format(obj.id))
-            for num in range(1, len(my_list)):
-                my_list[num] = my_list[num].replace('=', ' ')
-                attributes = split(my_list[num])
-                attributes[1] = attributes[1].replace('_', ' ')
-                try:
-                    var = eval(attributes[1])
-                    attributes[1] = var
-                except:
-                    pass
-                if type(attributes[1]) is not tuple:
-                    setattr(obj, attributes[0], attributes[1])
-            obj.save()
-        except SyntaxError:
+        """ Create an object of any class"""
+        if not args:
             print("** class name missing **")
-        except NameError:
+            return
+        # For default split(\n \t o \r).
+        tokens = args.split()
+        class_name = tokens[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[class_name]()
+        for token in tokens:
+            if token != class_name:
+                (key, value) = token.split(sep='=', maxsplit=1)
+                # Info: All underscores _ must be replace by spaces.
+                value = value.replace('_', ' ')
+                # Info: Remove "".
+                value = value.replace("\"", '')
+                try:
+                    # Info! Parse value in type of data.
+                    tmp_value = eval(value)
+                    value = tmp_value
+                except BaseException:
+                    pass
+                setattr(new_instance, key, value)
+        storage.new(new_instance)
+        storage.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """

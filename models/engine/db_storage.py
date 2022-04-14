@@ -23,6 +23,7 @@ env = os.getenv("HBNB_ENV")
 engine_txt = 'mysql+mysqldb://' + user + ':' + pasw + '@' + host + '/' + db
 
 class DBStorage():
+    """Constructor of the class DBStorage"""
     __engine = None
     __session = None
 
@@ -32,6 +33,7 @@ class DBStorage():
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
+        """Returns the list of objects of one type of class or all"""
         objs = []
         dic = {}
         if cls == None:
@@ -69,3 +71,7 @@ class DBStorage():
         session = scoped_session(fact_session)
         """Creating a session"""
         self.__session = session()
+
+    def close(self):
+        """Close de current session"""
+        self.__session.close()
