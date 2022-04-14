@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from shlex import split
 
 
 class HBNBCommand(cmd.Cmd):
@@ -114,26 +115,33 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        args = args.split(' ')
-        my_class = args[0]
-        if not my_class:
+        """Creates a new instance of BaseModel, saves it
+        Exceptions:
+            SyntaxError: when there is no args given
+            NameError: when there is no object taht has the name
+        """
+        try:
+            if not line:
+                raise SyntaxError()
+            my_list = line.split(" ")
+            obj = eval("{}()".format(my_list[0]))
+            print("{}".format(obj.id))
+            for num in range(1, len(my_list)):
+                my_list[num] = my_list[num].replace('=', ' ')
+                attributes = split(my_list[num])
+                attributes[1] = attributes[1].replace('_', ' ')
+                try:
+                    var = eval(attributes[1])
+                    attributes[1] = var
+                except:
+                    pass
+                if type(attributes[1]) is not tuple:
+                    setattr(obj, attributes[0], attributes[1])
+            obj.save()
+        except SyntaxError:
             print("** class name missing **")
-            return
-        elif my_class not in HBNBCommand.classes:
+        except NameError:
             print("** class doesn't exist **")
-            return
-
-        params = args[1:]
-        obj = HBNBCommand.classes[my_class]()
-        for param in params:
-            [key, value] = param.split("=")
-            value = value.replace("_", " ")
-            value = value.replace("\"", "")
-            setattr(obj, key, value)
-        storage.new(obj)
-        storage.save()
-        print(obj.id)
 
     def help_create(self):
         """ Help information for the create method """
