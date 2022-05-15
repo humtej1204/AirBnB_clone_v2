@@ -18,7 +18,7 @@ def hello():
     return ('Hello HBNB!')
 
 
-@app.route('/', strict_slashes=False)
+@app.route('/hbnb', strict_slashes=False)
 def hbnb():
     '''
     Class hbnb, second test class
