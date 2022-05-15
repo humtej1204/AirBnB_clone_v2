@@ -1,30 +1,22 @@
 #!/usr/bin/python3
-'''
-Script that starts a Flask web application
-'''
-
-
-from flask import Flask
+"""This script starts a Flask web application"""
+from flask import Flask, render_template
 from models import storage
 from models.state import State
-
 app = Flask(__name__)
 
 
 @app.route('/states_list', strict_slashes=False)
-def list():
-    '''
-    Class hbnb, create a dinamic page which display the list of objects
-    '''
+def states_list():
+    """Returns a rendered html template at the /states_list route,
+    listing all states"""
     return render_template('7-states_list.html',
-                           states_list=storage.all('State').values())
+                           states=storage.all('State').values())
 
 
 @app.teardown_appcontext
-def close_db(self):
-    '''
-    Closes the database again at the end of the request
-    '''
+def teardown(self):
+    """Removes the current SQLAlchemy Session"""
     storage.close()
 
 
