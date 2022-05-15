@@ -78,3 +78,10 @@ class FileStorage:
             """Delete obj from __objects if it’s inside"""
             check = obj.to_dict()['__class__'] + '.' + obj.id
             FileStorage.__objects.pop(check)
+
+    def close(self):
+        """
+        Call reload() method for deserializing the JSON file to objects
+        """
+        return self.reload()
+
